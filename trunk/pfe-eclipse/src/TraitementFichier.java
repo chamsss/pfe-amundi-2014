@@ -1,13 +1,15 @@
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 
 public class TraitementFichier {
 
-	private static String fileAdress = "C:\\Users\\Gaùtch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons.csv";
+	// Ne pas mettre les extensions de fichiers
+	private static String fileAdress = "C:\\Users\\Gaùtch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+
 
 	public static void main (String[] args){
 
@@ -39,25 +41,44 @@ public class TraitementFichier {
 		
 		try {
 
-			BufferedReader br = new BufferedReader( new FileReader(new File(fileAdress)));
-
-
+			BufferedReader br = new BufferedReader( new FileReader(fileAdress+".csv"));
+			BufferedWriter bw = new BufferedWriter( new FileWriter(fileAdress+".txt")); 
+			
 			String line;
 			String[] lArray;
 		    ArrayList al = new ArrayList();
 		    
+		    int j = 2 ;
 			while((line = br.readLine()) != null){
 				
 				 lArray = line.split(";");	
-				 al.add(lArray[1]);
+				 
+				 al.add(lArray[j]);
+				 j++;
 			}
-			al.remove(0); // We delete "name"
+			
+			//al.remove(0); // We delete "name"
+			
+			for(int i=0; i< al.size(); i++ ){
+				System.out.println(al.get(i));
+				bw.write((String) al.get(i)+";");
+
+
+				
+			}
+//			bw.newLine();
+//		//	bw.write();
+//			bw.newLine();
+//			String s = "tout le monde 2";
+//			bw.write(s);
+			bw.close(); 
+			
 			System.out.println(al);
 			
 			
 			
 		} catch (Exception e) {
-			e.getMessage();
+			System.err.println(e.getMessage());
 		}
 		
 

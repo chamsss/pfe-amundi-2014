@@ -13,13 +13,15 @@ public class TraitementFichier {
 
 
 	public static void main (String[] args){
-
-
-		traitementCsv2();
+		
+//		String aa = "12M";
+//		System.out.println(ConvertDate(aa));
+		
+		traitementCsv();
 	}
 
-
-	public static void traitementCsv(){ // Marche pour la premiere ligne
+	
+	public static void traitementCsv(){ 
 
 		try {
 
@@ -28,64 +30,19 @@ public class TraitementFichier {
 
 			String line;
 			String[] lArray;
-			ArrayList al = new ArrayList();
 
-			int j = 0 ;
-
-			// On lit la premiere ligne
-			if((line = br.readLine()) != null){
-
-		//	while((line = br.readLine()) != null){
-
-				lArray = line.split(";");
-				for(int i=0; i< lArray.length; i++ ){
-					if (!lArray[i].equals("")){ 
-						al.add(lArray[i]); // On met dans une liste si différent de zero
-					}
-				}
-			}
-
-			for(int i=0; i< al.size(); i++ ){
-				bw.write((String) al.get(i)+";");
-			}
-			bw.close(); 
-
-
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-
-
-	}
-
-
-	public static void traitementCsv2(){ 
-
-		try {
-
-			BufferedReader br = new BufferedReader( new FileReader(fileAdress+".csv"));
-			BufferedWriter bw = new BufferedWriter( new FileWriter(fileAdress+".txt")); 
-
-			String line;
-			String[] lArray;
-			ArrayList al = new ArrayList();
-
-			int j = 0 ;
-
-			// On lit la premiere ligne
-		//	if((line = br.readLine()) != null){
 
 			while((line = br.readLine()) != null){
 
 				bw.write((String) "\n");
 
 				
-				if(line.startsWith("Level")){
-					System.out.println("Cette ligne commence par un Level ");
+				if(line.startsWith("Level")){ // Date avec 1M 2M etc...
+//					System.out.println("Cette ligne commence par un Level ");
 					lArray = line.split(";");
 					for(int i=2; i< lArray.length; i++ ){ // On ne copie pas les 2 premiers élements
-								al.add(lArray[i]); 
-								bw.write((String) al.get(i-1)+";");
+						lArray[i]= ConvertDate(lArray[i]);
+						bw.write((String) lArray[i] +";");
 
 						
 					}		
@@ -93,11 +50,10 @@ public class TraitementFichier {
 				}
 				
 				else if(line.startsWith("0")){
-					System.out.println("Cette ligne commence par un 0 ");
+//					System.out.println("Cette ligne commence par un 0 ");
 					lArray = line.split(";");
 					for(int i=1; i< lArray.length; i++ ){ // On ne copie pas le premier élément
-						al.add(lArray[i]); 
-						bw.write((String) al.get(i-1)+";");
+						bw.write((String) lArray[i] +";");
 
 						
 					}		
@@ -106,29 +62,16 @@ public class TraitementFichier {
 				
 				// Premiere ligne
 				else if(line.startsWith("")){
-					System.out.println("Cette ligne commence par un vide ");
-				//	System.out.println(line);
+//					System.out.println("Cette ligne commence par un vide ");
 					lArray = line.split(";");
 					for(int i=2; i< lArray.length; i++ ){ // On ne copie pas les 2 premiers élements
-						//if (!lArray[i].equals("")){ 
-								al.add(lArray[i]); // On met dans une liste si différent de zero
-						//		System.out.println(l);
-								bw.write((String) al.get(i-1)+";");
-
-					//	}
+								bw.write((String) lArray[i] +";");
 					}		
 					
 				}
 
 			}
 			
-			
-			System.out.println("al2");
-			System.out.println(al);
-			
-			for(int i=0; i< al.size(); i++ ){
-				bw.write((String) al.get(i)+";");
-			}
 			bw.close(); 
 
 
@@ -137,6 +80,16 @@ public class TraitementFichier {
 		}
 
 
+	}
+
+	public static String ConvertDate( String dateM){ 
+		String date = null;
+		int length = dateM.length();
+		date = dateM.substring(0, length-1);
+		int dateInt = Integer.parseInt(date); 
+		dateInt *= 12;
+		date = Integer.toString(dateInt);
+		return date;
 	}
 
 

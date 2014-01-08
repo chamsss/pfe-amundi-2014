@@ -14,9 +14,13 @@ public class TraitementFichier {
 
 	public static void main (String[] args){
 		
-//		String aa = "12M";
-//		System.out.println(ConvertDate(aa));
+	//	String aa = "12M";
+		//System.out.println(ConvertDate(aa) + ";");
+//		
+//		String aa = "0,11224";
+	//	aa.replace('0', '2');
 		
+
 		traitementCsv();
 	}
 
@@ -36,7 +40,9 @@ public class TraitementFichier {
 
 				bw.write((String) "\n");
 
-				
+				line = line.replace(',', '.');
+				System.out.println(line);
+
 				if(line.startsWith("Level")){ // Date avec 1M 2M etc...
 //					System.out.println("Cette ligne commence par un Level ");
 					lArray = line.split(";");
@@ -72,6 +78,7 @@ public class TraitementFichier {
 
 			}
 			
+			
 			bw.close(); 
 
 
@@ -82,13 +89,17 @@ public class TraitementFichier {
 
 	}
 
-	public static String ConvertDate( String dateM){ 
+	public static String ConvertDate( String dateM ){ 
+		
+		
+		
 		String date = null;
 		int length = dateM.length();
 		date = dateM.substring(0, length-1);
-		int dateInt = Integer.parseInt(date); 
-		dateInt *= 12;
-		date = Integer.toString(dateInt);
+		date += "/12";
+//		int dateInt = Integer.parseInt(date); 
+//		dateInt *= 12;
+//		date = Integer.toString(dateInt);
 		return date;
 	}
 

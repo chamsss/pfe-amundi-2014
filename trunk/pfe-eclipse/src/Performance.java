@@ -10,7 +10,9 @@ import Jama.util.*;
 
 public class Performance{
 
-	private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
+	private static String fileAdress = "C:\\Users\\Gaùtch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+
+//	private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
 
 	private static Matrix matrixValue;
 	private static String[] className; // vector containing title like "German Government Debt..."
@@ -118,6 +120,8 @@ public class Performance{
 
 	public static void main (String[] args){
 		FillMatrixValue();
+		int countryBeginSearch = matrixSearch("dateTable", 0, "20090417");
+		System.out.println(countryBeginSearch);
 		
 		//System.out.println(matrixValue);
 	}
@@ -161,39 +165,19 @@ public class Performance{
 
 	}
 
-	public double RendementRelatif(String country, String maturity, String date){
-		double rendement=0;
-
-		//r(t+1)/r(t) -1;
-		return rendement;
-	}
-
-	public double RendementDifference(String country, String maturity, String date){
-		double rendement=0;
-		//r(t+1)-r(t);
-
-		return rendement;
-	}
-
-	public double RendementLogarithmique(String country, String maturity, String date){
-		double rendement=0;
-		//ln(r(t+1)/r(t));
-
-		return rendement;
-	}
 
 
 	/*
 	 * table = country , maturity , date 
 	 * 
 	 */
-	public int matrixSearch(String table, int indexStart, String wordSearch )  {
+	public static int matrixSearch(String table, int indexStart, String wordSearch )  {
 
 	
 
 		if (table.equals("countryTable")){
-			
-			for (int i=0 ; i< className.length ; i++){
+			System.out.println("Je rentre dans country");
+			for (int i = indexStart ; i< className.length ; i++){
 				if (className[i].startsWith(wordSearch)){
 					return i;
 					
@@ -203,7 +187,7 @@ public class Performance{
 
 		}
 		else if (table.equals("maturityTable")){
-			for (int i=0 ; i< time.length ; i++){
+			for (int i= indexStart ; i< time.length ; i++){
 				if (time[i].equals(wordSearch)){
 					return i;
 					
@@ -213,7 +197,7 @@ public class Performance{
 		}	
 
 		else if (table.equals("dateTable")){
-			for (int i=0 ; i< date.length ; i++){
+			for (int i= indexStart ; i< date.length ; i++){
 				if (date[i]==Double.parseDouble(wordSearch)){
 					return i;
 					

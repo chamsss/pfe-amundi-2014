@@ -12,7 +12,11 @@ public class Performance{
 
 	private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
 
-	static Matrix matrixValue;
+	private static Matrix matrixValue;
+	private static String[] className; // vector containing title like "German Government Debt..."
+	private static String[] time;		// vector time of maturity
+	private static String[] lArray;	
+	private static double[] date;		
 
 
 	public static int countLine(String filename) throws IOException {
@@ -41,9 +45,7 @@ public class Performance{
 			String line;
 			BufferedReader br1 = new BufferedReader( new FileReader(fileAdress+".txt"));
 
-			String[] className;
-			String[] time;
-			String[] lArray;
+
 
 			//Count number of Cols and Rows to set a double [][] to set the matrix 
 			line=br1.readLine();
@@ -53,9 +55,16 @@ public class Performance{
 			time=line.split(";");
 			int nbColonne=className.length+1;
 
+			//Count number of line
 			int nbLigne=countLine(fileAdress+".txt");
 			System.out.println("nbColonne: "+nbColonne+" ; NbLigne: "+nbLigne+"\n");
-			double[][] value=new double[nbColonne][nbLigne];
+			
+			date=new double[nbLigne-1];
+
+			//Set a vector of vector to create the Jama matrix
+			double[][] value=new double [nbLigne][nbColonne];
+			
+			
 
 
 			line="";
@@ -63,43 +72,53 @@ public class Performance{
 			while((line = br1.readLine()) != null){
 				//bug : ligne 0 != German...
 				System.out.println("line "+i+": "+line);
-				line=line.replace(',','.');
-				System.out.println(line);
 				lArray=line.split(";");
-				//System.out.println("number"+line);
+				/*				System.out.println("number"+line);
 				System.out.println(lArray[0]);
 				System.out.println(lArray[lArray.length-1]);
-
-//				if(nbColonne==lArray.length){
-//					System.out.println("nbColonne : "+nbColonne+" / lArray.lenght : "+lArray.length);
-//					System.out.println("Oui");
-//				}
-//				else {
-//					System.out.println("nbColonne : "+nbColonne+" / lArray.lenght : "+lArray.length);
-//					System.out.println("Non");
-//				}
+				if(nbColonne==lArray.length){
+					System.out.println("nbColonne : "+nbColonne+" / lArray.lenght : "+lArray.length);
+					System.out.println("Oui");
+				}
+				else {
+					System.out.println("nbColonne : "+nbColonne+" / lArray.lenght : "+lArray.length);
+					System.out.println("Non");
+				}
+				 */
 				System.out.println("--------------------");
 				for(int j=0;j<nbColonne;j++){
-					System.out.println("j:"+j);
-					System.out.println(Double.parseDouble(lArray[j]));
-					value[j][i]=Double.parseDouble(lArray[j]);
+					if(j==0){
+						date[i]=Double.parseDouble(lArray[j]);
+					}else{
+						value[i][j-1]=Double.parseDouble(lArray[j]);
+					}
 				}
 
 				i++;
 
 			}
+			for(int y=0;y<date.length;y++){
+				System.out.println(date[y]);
+			}
 
-			//matrixValue=new Matrix(double[][] value);
-
+			matrixValue=new Matrix(value);
+			
+			for(int j=0;j<matrixValue.getRowDimension()-1;j++){
+				for(int k=0;k<matrixValue.getColumnDimension()-1;k++){
+					System.out.print(matrixValue.get(j, k)+" ");
+				}
+				System.out.println("\n");
+			}
 		}
 		catch (Exception e){
-			System.out.println("Error");
+			System.out.println("Error: "+e.getMessage());
 		}
 	}
 
 
 	public static void main (String[] args){
 		FillMatrixValue();
+		
 		//System.out.println(matrixValue);
 	}
 

@@ -123,24 +123,108 @@ public class Performance{
 	}
 
 
-
-	public double RendementRelatif(){
+	public double Rendement(String rendementType, String country, String maturity, String date){
 		double rendement=0;
+
+		int countryBeginSearch = matrixSearch("countryTable", 0, country);
+		int maturitySearch = matrixSearch("maturityTable", countryBeginSearch, maturity);
+		int dateSearch = matrixSearch("dateTable", 0, date);
+		
+		
+		if (rendementType.equals("relatif")){
+			//Matrix.get(i,j);
+		
+			
+			//r(t+1)/r(t) -1;
+
+		//	rendement = RendementRelatif(country, maturity, date);
+
+		}
+
+		else if (rendementType.equals("difference")){
+			//r(t+1)-r(t);
+
+//			rendement = RendementDifference(country, maturity, date);
+
+		}
+
+		else if (rendementType.equals("log")){
+			//ln(r(t+1)/r(t));
+
+			
+			
+//			rendement = RendementLogarithmique(country, maturity, date);
+
+		}
+		return rendement;
+
+
+	}
+
+	public double RendementRelatif(String country, String maturity, String date){
+		double rendement=0;
+
 		//r(t+1)/r(t) -1;
 		return rendement;
 	}
 
-	public double RendementDifference(){
+	public double RendementDifference(String country, String maturity, String date){
 		double rendement=0;
 		//r(t+1)-r(t);
 
 		return rendement;
 	}
 
-	public double RendementLogarithmique(){
+	public double RendementLogarithmique(String country, String maturity, String date){
 		double rendement=0;
 		//ln(r(t+1)/r(t));
 
 		return rendement;
 	}
+
+
+	/*
+	 * table = country , maturity , date 
+	 * 
+	 */
+	public int matrixSearch(String table, int indexStart, String wordSearch )  {
+
+	
+
+		if (table.equals("countryTable")){
+			
+			for (int i=0 ; i< className.length ; i++){
+				if (className[i].startsWith(wordSearch)){
+					return i;
+					
+				}
+			}
+			
+
+		}
+		else if (table.equals("maturityTable")){
+			for (int i=0 ; i< time.length ; i++){
+				if (time[i].equals(wordSearch)){
+					return i;
+					
+				}
+			}
+
+		}	
+
+		else if (table.equals("dateTable")){
+			for (int i=0 ; i< date.length ; i++){
+				if (date[i]==Double.parseDouble(wordSearch)){
+					return i;
+					
+				}
+			}
+
+		}
+
+		//else
+		return 0;
+	}
+	
+	
 }

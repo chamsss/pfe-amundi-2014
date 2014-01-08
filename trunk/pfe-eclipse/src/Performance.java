@@ -120,14 +120,28 @@ public class Performance{
 
 	public static void main (String[] args){
 		FillMatrixValue();
-		int countryBeginSearch = matrixSearch("dateTable", 0, "20090417");
-		System.out.println(countryBeginSearch);
+//		int countryBeginSearch = matrixSearch("countryTable", 0, "German");
+//		
+//		System.out.println(countryBeginSearch);
+//
+//		
+//		int dateSearch = matrixSearch("dateTable", 0, "20081210");
+//		System.out.println(dateSearch);
+//		
+//		int maturitySearch = matrixSearch("maturityTable",countryBeginSearch, "12/12");
+//		System.out.println(maturitySearch);
+//		
+//
+//		System.out.println(matrixValue.get(dateSearch, maturitySearch));
+		
+		System.out.println(Rendement("relatif", "German", "3/12", "20081210", 1));
+
 		
 		//System.out.println(matrixValue);
 	}
 
 
-	public double Rendement(String rendementType, String country, String maturity, String date){
+	public static double Rendement(String rendementType, String country, String maturity, String date, int duration){
 		double rendement=0;
 
 		int countryBeginSearch = matrixSearch("countryTable", 0, country);
@@ -137,8 +151,13 @@ public class Performance{
 		
 		if (rendementType.equals("relatif")){
 			//Matrix.get(i,j);
-		
+		//	double date1 = 0;
+			int date2 = dateSearch + duration;
 			
+			double valDate1 = matrixValue.get(dateSearch, maturitySearch);
+			double valDate2 = matrixValue.get(date2, maturitySearch);
+
+			rendement = (valDate2 / valDate1) - 1;
 			//r(t+1)/r(t) -1;
 
 		//	rendement = RendementRelatif(country, maturity, date);

@@ -20,7 +20,6 @@ public class Performance{
 	private static String[] lArray;	
 	private static double[] date;		
 
-
 	public static int countLine(String filename) throws IOException {
 		InputStream is = new BufferedInputStream(new FileInputStream(filename));
 		try {

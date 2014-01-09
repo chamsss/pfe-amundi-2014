@@ -10,9 +10,9 @@ import Jama.util.*;
 
 public class Performance{
 
-	private static String fileAdress = "C:\\Users\\Gaùtch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+	//private static String fileAdress = "C:\\Users\\Gaï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
 
-	//	private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
+	private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
 
 	private static Matrix matrixValue;
 	private static String[] className; // vector containing title like "German Government Debt..."
@@ -20,6 +20,7 @@ public class Performance{
 	private static String[] lArray;	
 	private static double[] date;		
 
+	//count the number of line in a textfile
 	public static int countLine(String filename) throws IOException {
 		InputStream is = new BufferedInputStream(new FileInputStream(filename));
 		try {
@@ -41,6 +42,7 @@ public class Performance{
 		}
 	}
 
+	//Fill Matrix value from textfile values
 	public static void FillMatrixValue(){
 		try{
 			String line;
@@ -123,20 +125,7 @@ public class Performance{
 		String[]  tableDuration= {"1/12","12/12"};
 		Matrix a = extractSubMatrix(5, tableCountry, tableDuration);
 
-
-		//		for(int j=0;j<a.getRowDimension()-1;j++){
-		//			for(int k=0;k<a.getColumnDimension()-1;k++){
-		//				System.out.print(a.get(j, k)+" ");
-		//			}
-		//			System.out.println("\n");
-		//		}
-
-
-
-
-
-
-
+		//Print matrix values
 		for(int j=0;j<a.getRowDimension();j++){
 			for(int k=0;k<a.getColumnDimension();k++){
 				System.out.print(a.get(j, k)+" ");
@@ -145,9 +134,9 @@ public class Performance{
 		}
 
 
-
 		Matrix b = Rendement2(a, "relatif", 2);
 		
+		//Print matrix values
 		for(int j=0;j<b.getRowDimension();j++){
 			for(int k=0;k<b.getColumnDimension();k++){
 				System.out.print(b.get(j, k)+" ");
@@ -157,52 +146,43 @@ public class Performance{
 		
 	}
 
-
+	//Compute Yield Matrix of chosen submatrix "mat"
+	// rendementType : type of yield (relative, log,...)
+	//duration : yield duration in days (daily,weekly, ...)
 	public static Matrix Rendement2(Matrix mat,String rendementType, int duration){
 
 		Matrix rendement=null;
 		int nbCols=mat.getColumnDimension();
 		int nbRows=mat.getRowDimension();
 		double[][] value;
-		if(duration==1){
-			value=new double[nbRows/duration-1][nbCols];
-		}
-		else {
-			value=new double[nbRows/duration][nbCols];
-		}
+		value=new double[(nbRows-1)/duration][nbCols];
+		
 		
 		if(duration>nbRows){
-			System.out.println("Durée supérieur à la plage de donnée");
+			System.out.println("Durï¿½e supï¿½rieur ï¿½ la plage de donnï¿½e");
 		}else{
 
 			//rendement relatif
 			if (rendementType.equals("relatif")){
-				//pour chaque colonne
-
+				
+				//for each cols
 				for(int j=0;j<nbCols;j++){
-					//compute performance depending on the duration.
+					//compute yield depending on the duration.
 					int cptRows=0;
-
+					//for each rows
 					for(int i=0;i+duration<nbRows;i+=duration){
 						double valDate1 = mat.get(i, j);
 						double valDate2 = mat.get(i+duration, j);
-						value[cptRows][j] = (valDate2-1)/valDate1;
-//						if(valDate2!=0){
-//							value[cptRows][j]= (valDate2 / valDate1) - 1;
-//						}
-//						else{
-//							value[cptRows][j]= 0;
-//						}
+						value[cptRows][j] = (valDate2/valDate1)-1;
 						cptRows++;
 					}
 				}
 				//r(t+1)/r(t) -1;
-				//	rendement = RendementRelatif(country, maturity, date);
 			}
 			else if (rendementType.equals("difference")){
+				//for each cols
 				for(int j=0;j<nbCols;j++){
 					int cptRows=0;
-
 					//compute performance depending on the duration.
 					for(int i=nbRows-1;i>0;i-=duration){
 						double valDate1 = mat.get(i, j);
@@ -212,9 +192,8 @@ public class Performance{
 					}
 				}
 				//r(t+1)-r(t);
-				//			rendement = RendementDifference(country, maturity, date);
-
 			}
+			
 			else if (rendementType.equals("log")){
 				for(int j=0;j<nbCols;j++){
 					int cptRows=0;
@@ -228,53 +207,10 @@ public class Performance{
 				}
 			}
 		}
+		
 		rendement=new Matrix(value);
 		return rendement;
 	}
-
-		//	public static double Rendement(String rendementType, String country, String maturity, String date, int duration){
-		//		double rendement=0;
-		//
-		//		int countryBeginSearch = matrixSearch("countryTable", 0, country);
-		//		int maturitySearch = matrixSearch("maturityTable", countryBeginSearch, maturity);
-		//		int dateSearch = matrixSearch("dateTable", 0, date);
-		//		
-		//		
-		//		if (rendementType.equals("relatif")){
-		//			//Matrix.get(i,j);
-		//		//	double date1 = 0;
-		//			int date2 = dateSearch + duration;
-		//			
-		//			double valDate1 = matrixValue.get(dateSearch, maturitySearch);
-		//			double valDate2 = matrixValue.get(date2, maturitySearch);
-		//
-		//			rendement = (valDate2 / valDate1) - 1;
-		//			//r(t+1)/r(t) -1;
-		//
-		//		//	rendement = RendementRelatif(country, maturity, date);
-		//
-		//		}
-		//
-		//		else if (rendementType.equals("difference")){
-		//			//r(t+1)-r(t);
-		//
-		////			rendement = RendementDifference(country, maturity, date);
-		//
-		//		}
-		//
-		//		else if (rendementType.equals("log")){
-		//			//ln(r(t+1)/r(t));
-		//
-		//			
-		//			
-		////			rendement = RendementLogarithmique(country, maturity, date);
-		//
-		//		}
-		//		return rendement;
-		//
-		//
-		//	}
-
 
 
 		/*
@@ -322,7 +258,7 @@ public class Performance{
 
 
 		/*
-		 * 1 année = 260 jours
+		 * 1 annï¿½e = 260 jours
 		 * tableCountry = ["France", "German" etc... ]
 		 * tableDuration = ["1/12", " 12/12" etc ... ]
 		 * 
@@ -359,7 +295,7 @@ public class Performance{
 			}
 			for(int k = 0; k < indiceCol.length; k++)
 			{
-				System.out.println("donnée à l'indice " + k + " = " + indiceCol[k]);
+				System.out.println("donnï¿½e ï¿½ l'indice " + k + " = " + indiceCol[k]);
 
 			} 
 
@@ -379,16 +315,7 @@ public class Performance{
 				j++;
 			}
 
-			//		for(int k = 0; k < indiceRow.length; k++)
-			//	    {
-			//	      System.out.println("donnée à l'indice " + k + " = " + indiceRow[k]);
-			//	      
-			//	    } 		
-			//matrixValue.getMatrix(, arg1)
 			return matrixValue.getMatrix(indiceRow, indiceCol);
-
-			//	matrixValue; 
-
 
 		}
 

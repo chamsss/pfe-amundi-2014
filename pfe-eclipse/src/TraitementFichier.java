@@ -22,7 +22,9 @@ public class TraitementFichier {
 		//	aa.replace('0', '2');
 
 
-		traitementCsv();
+		
+
+		//	traitementCsv();
 	}
 
 

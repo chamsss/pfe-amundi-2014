@@ -187,12 +187,13 @@ public class Performance{
 					for(int i=0;i+duration<nbRows;i+=duration){
 						double valDate1 = mat.get(i, j);
 						double valDate2 = mat.get(i+duration, j);
-						if(valDate2!=0){
-							value[cptRows][j]= (valDate2 / valDate1) - 1;
-						}
-						else{
-							value[cptRows][j]= 0;
-						}
+						value[cptRows][j] = (valDate2-1)/valDate1;
+//						if(valDate2!=0){
+//							value[cptRows][j]= (valDate2 / valDate1) - 1;
+//						}
+//						else{
+//							value[cptRows][j]= 0;
+//						}
 						cptRows++;
 					}
 				}

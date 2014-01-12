@@ -1,19 +1,23 @@
 import java.io.BufferedReader;
 import java.lang.Math;
+
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.Covariance;
+
 import java.util.ArrayList;
 import java.io.*;
 
-//import sun.security.util.Length;
-
 import Jama.Matrix;
+import Jama.EigenvalueDecomposition;
 import Jama.util.*;
 
-public class Performance{
+public class Performance {
 
 	//private static String fileAdress = "C:\\Users\\Gaï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
 
-	private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
-
+	//private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
+	private static String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
+	
 	private static Matrix matrixValue;
 	private static String[] className; // vector containing title like "German Government Debt..."
 	private static String[] time;		// vector time of maturity
@@ -135,7 +139,7 @@ public class Performance{
 
 
 		Matrix b = Rendement2(a, "relatif", 2);
-		
+		System.out.println("Sous matrice :");
 		//Print matrix values
 		for(int j=0;j<b.getRowDimension();j++){
 			for(int k=0;k<b.getColumnDimension();k++){
@@ -143,6 +147,77 @@ public class Performance{
 			}
 			System.out.println("\n");
 		}
+		
+		Matrix vcv = calculVCV(b);
+		
+		/*Matrix vcv=new Matrix(3,3);
+		vcv.set(0, 0, 1);
+		vcv.set(0, 1, 0);
+		vcv.set(0, 2, 1);
+		vcv.set(1, 0, 0);
+		vcv.set(1, 1, 1);
+		vcv.set(1, 2, 1);
+		vcv.set(2, 0, 0);
+		vcv.set(2, 1, 0);
+		vcv.set(2, 2, 1);*/
+		
+		//Affichage matrice
+	 	System.out.println("VCV : ");
+	 	for(int j=0;j<vcv.getRowDimension();j++){
+			for(int k=0;k<vcv.getColumnDimension();k++){
+				System.out.print(vcv.get(j, k)+" ");
+			}
+			System.out.println("\n");
+		}
+		
+		
+		//Valeurs propres
+		double[] values = eigenValues(vcv);
+		
+		//Print valeurs propres
+		System.out.println("Valeurs propres : ");
+		if (values==null) {
+			System.out.println("matrice VCV pas carrée");
+		}
+		
+		else {
+			for (int i = 0 ; i < values.length ; i++) {
+				System.out.println(values[i]);
+			}
+		}
+		
+		//Vecteurs propres
+		Matrix vectors = eigenVectors(vcv);
+		//Print valeurs propres
+		System.out.println("Vecteurs propres : ");
+		if (vectors==null) {
+			System.out.println("matrice VCV pas carrée");
+		}
+				
+		else {
+			for(int j=0;j<vectors.getRowDimension();j++){
+				for(int k=0;k<vectors.getColumnDimension();k++){
+					System.out.print(vectors.get(j, k)+" ");
+				}
+				System.out.println("\n");
+			}
+			
+		}
+		
+		//Définie positive
+		System.out.println(" VCV déf positive : " + defPositive(vcv));
+		
+		//Matrice de corrélation
+		Matrix cor = correlationMatrix(vcv);
+		
+		//Print matrix correlation values
+		System.out.println("Matrice de corrélation : ");
+				for(int j=0;j<cor.getRowDimension();j++){
+					for(int k=0;k<cor.getColumnDimension();k++){
+						System.out.print(cor.get(j, k)+" ");
+					}
+					System.out.println("\n");
+				}
 		
 	}
 
@@ -213,8 +288,7 @@ public class Performance{
 	}
 
 
-		/*
-		 * table = country , maturity , date 
+		/* table = country , maturity , date 
 		 * 
 		 */
 		public static int matrixSearch(String table, int indexStart, String wordSearch )  {
@@ -318,5 +392,97 @@ public class Performance{
 			return matrixValue.getMatrix(indiceRow, indiceCol);
 
 		}
+		
 
+	//Calcul matrice VCV
+	public static Matrix calculVCV (Matrix mat) {
+		
+	 	int nbRows = mat.getRowDimension();
+	 	int nbColumns = mat.getColumnDimension();
+	 	
+	 	Matrix VCV = new Matrix(nbColumns,nbColumns);
+	 	
+	 	//Création liste qui va contenir les vecteurs (tab) colonne de mat
+	 	ArrayList<double[]> liste = new ArrayList();
+	 	
+	 	//Remplissage liste par les vecteurs colonnes de la matrice
+	 	for (int j = 0 ; j < nbColumns ; j++){
+	 		//Vecteurs de mat
+	 		double[] vecteur = new double[nbRows];
+	 		
+	 		for (int i = 0 ; i < nbRows ; i++){
+	 			vecteur[i] = mat.get(i, j);
+	 		}
+	 		liste.add(vecteur);
+	 	}
+	 		 	
+	 	Covariance cov = new Covariance();
+	 	
+	 	//Calcul des covariances et remplissage matrice VCV
+	 	for (int k = 0 ; k < nbColumns ; k++){
+	 		for (int l = 0 ; l < nbColumns ; l++){
+	 			VCV.set(l, k, cov.covariance(liste.get(k), liste.get(l)));
+	 		}
+	 	}
+	 	
+	 	return VCV;
 	}
+	
+	//Calcul valeurs propres
+	public static double[] eigenValues(Matrix mat){
+		
+		//On vérifie que la matrice soit bien carrée
+		if (mat.getRowDimension() == mat.getColumnDimension()){
+			return mat.eig().getRealEigenvalues();
+		}
+		
+		else return null;
+		
+	}
+	
+	//Calcul vecteurs propres
+	public static Matrix eigenVectors(Matrix mat){
+		
+		//On vérifie que la matrice soit bien carrée
+		if (mat.getRowDimension() == mat.getColumnDimension()){
+			EigenvalueDecomposition m = new EigenvalueDecomposition(mat);
+			return m.getV();
+		}
+		
+		else return null;
+	}
+	
+	//Vérifie si VCV déf positive
+	public static boolean defPositive(Matrix mat){
+		
+		double[] values = eigenValues(mat);
+		
+		if (values==null){
+			return false;
+		}
+		
+		else {
+			int i = 0;
+			while(i < values.length && values[i] > 0){
+				i++;
+			}
+
+			if(i==values.length){
+				return true;
+			}
+			
+			else return false;
+		}
+	}
+	
+	//Calcul matrice de corrélation
+	public static Matrix correlationMatrix(Matrix mat) {
+		Matrix cor = mat;
+		for (int i = 0 ; i < mat.getRowDimension() ; i++){
+			for (int j = 0 ; j< mat.getColumnDimension() ; j++) {
+				cor.set(i, j, cor.get(i, j)/Math.sqrt((cor.get(i, i)*cor.get(j, j))));
+			}
+		}
+		return cor;
+	}
+}

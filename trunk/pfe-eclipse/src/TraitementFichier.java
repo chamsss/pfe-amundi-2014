@@ -13,15 +13,16 @@ public class TraitementFichier {
 
 	//private static String fileAdress = "C:\\Users\\Ga�tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
 	//private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
-	private static String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
+	//private static String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
+	private static String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics";
 
 
 
 	
 	
-	public static void main (String[] args){
+	//public static void main (String[] args){
 		//	traitementCsv();
-	}
+	//}
 
 
 	/*

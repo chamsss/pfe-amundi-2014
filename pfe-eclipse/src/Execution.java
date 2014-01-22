@@ -5,13 +5,25 @@ public class Execution {
 	
 	public static void main(String[] args) {
 		
-		//TraitementFichier.traitementCsv();
-				
-		Performance.FillMatrixValue();
+		// Ne pas mettre les extensions de fichiers
+
+		//String fileAdress = "C:\\Users\\Gaï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+		//String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
+		//String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
+		String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics3";
+		
+		//Traitement fichier
+		//TraitementFichier tf1 = new TraitementFichier(fileAdress);
+		//tf1.traitementCsv();
+		
+		
+		//Performance
+		Performance p1 = new Performance(fileAdress);
+		p1.FillMatrixValue();
 		
 		String[] tableCountry = {"German","Italian"};
-		String[]  tableDuration= {"12/12","60/12","120/12","360/12"};
-		Matrix a = Performance.extractSubMatrix(1, tableCountry, tableDuration);
+		String[]  tableDuration= {"12/12"};
+		Matrix a = p1.extractSubMatrix(1, tableCountry, tableDuration);
 
 		//Print matrix values
 //		for(int j=0;j<a.getRowDimension();j++){
@@ -22,18 +34,19 @@ public class Execution {
 //		}
 
 
-		Matrix b = Performance.Rendement2(a, "relatif", 2);
-		System.out.println("Sous matrice :");
-		//Print matrix values
+		Matrix b = p1.Rendement(a, "difference", 1);
+//		System.out.println("Rendement :");
+//		//Print matrix values
 //		for(int j=0;j<b.getRowDimension();j++){
 //			for(int k=0;k<b.getColumnDimension();k++){
 //			
-//				System.out.print(b.get(j, k)+" ");
+//				System.out.print(b.get(j, k)+";");
 //			}
-//			System.out.println("\n");
+//			System.out.println();
 //		}
-//				
-		Matrix vcv = VarianceCovariance.calculVCV(b);
+//		
+		VarianceCovariance v1 = new VarianceCovariance(b);
+		Matrix vcv = v1.calculVCV();
 		
 		/*Matrix vcv=new Matrix(3,3);
 		vcv.set(0, 0, 1);
@@ -54,46 +67,46 @@ public class Execution {
 			}
 			System.out.println("\n");
 		}
-		
-		
-		//Valeurs propres
-		double[] values = VarianceCovariance.eigenValues();
-		
-		//Print valeurs propres
-		System.out.println("Valeurs propres : ");
-		if (values==null) {
-			System.out.println("matrice VCV pas carrée");
-		}
-		
-		else {
-			for (int i = 0 ; i < values.length ; i++) {
-				System.out.println(values[i]);
-			}
-		}
-		
+//		
+//		
+//		//Valeurs propres
+//		double[] values = v1.eigenValues();
+//		
+//		//Print valeurs propres
+//		System.out.println("Valeurs propres : ");
+//		if (values==null) {
+//			System.out.println("matrice VCV pas carrée");
+//		}
+//		
+//		else {
+//			for (int i = 0 ; i < values.length ; i++) {
+//				System.out.println(values[i]);
+//			}
+//		}
+//		
 		//Vecteurs propres
-		Matrix vectors = VarianceCovariance.eigenVectors();
+		//Matrix vectors = v1.eigenVectors();
 		//Print valeurs propres
-		System.out.println("Vecteurs propres : ");
-		if (vectors==null) {
-			System.out.println("matrice VCV pas carrée");
-		}
-				
-		else {
-			for(int j=0;j<vectors.getRowDimension();j++){
-				for(int k=0;k<vectors.getColumnDimension();k++){
-					System.out.print(vectors.get(j, k)+" ");
-				}
-				System.out.println("\n");
-			}
-			
-		}
+//		System.out.println("Vecteurs propres : ");
+//		if (vectors==null) {
+//			System.out.println("matrice VCV pas carrée");
+//		}
+//
+//		else {
+//			for(int j=0;j<vectors.getRowDimension();j++){
+//				for(int k=0;k<vectors.getColumnDimension();k++){
+//					System.out.print(vectors.get(j, k)+" ");
+//				}
+//				System.out.println("\n");
+//			}
+//
+//		}
 		
 		//Définie positive
-		System.out.println(" VCV déf positive : " + VarianceCovariance.defPositive());
+		//System.out.println(" VCV déf positive : " + VarianceCovariance.defPositive());
 		
 		//Matrice de corrélation
-		Matrix cor = VarianceCovariance.correlationMatrix();
+		Matrix cor = v1.correlationMatrix();
 		
 		//Print matrix correlation values
 		System.out.println("Matrice de corrélation : ");

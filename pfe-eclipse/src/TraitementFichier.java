@@ -2,34 +2,23 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.ArrayList;
 
+/*
+ * Permet de convertir un fichier CSV en fichier txt 
+ * afin de pouvoir manipuler les données
+ */
 
 public class TraitementFichier {
-
+	
+	private String fileAdress;
 	
 	
-	// Ne pas mettre les extensions de fichiers
-
-	//private static String fileAdress = "C:\\Users\\Gaï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
-	//private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
-	//private static String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
-	private static String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics";
-
-
+	public TraitementFichier(String fileAdress) {
+		this.fileAdress = fileAdress;
+	}
 
 	
-	
-	//public static void main (String[] args){
-		//	traitementCsv();
-	//}
-
-
-	/*
-	 * Permet de convertir un fichier CSV en fichier txt 
-	 * afin de pouvoir manipuler les données
-	 */
-	public static void traitementCsv(){ 
+	public void traitementCsv(){ 
 
 		try {
 
@@ -73,25 +62,28 @@ public class TraitementFichier {
 
 			}
 
-			bw.close(); 
+			bw.close();
+			br.close();
 
 
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 
-
 	}
+	
+	
 	/*
 	 * Permet de convertir une date de la forme 1M en 1/12
 	 * 	
 	 */
-	public static String ConvertDate(String dateM){
+	
+	public String ConvertDate(String dateM){
 		String date = null;
 		int length = dateM.length();
 		date = dateM.substring(0, length-1);
-		int dateInt = Integer.parseInt(date); 
 		date += "/12";
+		
 		return date;
 	}
 

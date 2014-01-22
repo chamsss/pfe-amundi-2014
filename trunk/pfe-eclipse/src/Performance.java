@@ -6,19 +6,21 @@ import Jama.Matrix;
 
 public class Performance {
 
-	//private static String fileAdress = "C:\\Users\\Ga�tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
-	//private static String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
-	//private static String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
-	private static String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics";
+	private String fileAdress;
+	private Matrix matrixValue;
+	private String[] className; // vector containing title like "German Government Debt..."
+	private String[] time;		// vector time of maturity
+	private String[] lArray;	
+	private double[] date;		
 	
-	private static Matrix matrixValue;
-	private static String[] className; // vector containing title like "German Government Debt..."
-	private static String[] time;		// vector time of maturity
-	private static String[] lArray;	
-	private static double[] date;		
 	
-	//count the number of line in a textfile
-	public static int countLine(String filename) throws IOException {
+	public Performance(String fileAdress) {
+		this.fileAdress = fileAdress;
+	}
+	
+	
+	//Count the number of line in a textfile
+	public int countLine(String filename) throws IOException {
 		InputStream is = new BufferedInputStream(new FileInputStream(filename));
 		try {
 			byte[] c = new byte[1024];
@@ -40,7 +42,7 @@ public class Performance {
 	}
 
 	//Fill Matrix value from textfile values
-	public static void FillMatrixValue(){
+	public void FillMatrixValue(){
 		try{
 			String line;
 			BufferedReader br1 = new BufferedReader( new FileReader(fileAdress+".txt"));
@@ -96,9 +98,9 @@ public class Performance {
 
 
 	//Compute Yield Matrix of chosen submatrix "mat"
-	// rendementType : type of yield (relative, log,...)
-	//duration : yield duration in days (daily,weekly, ...)
-	public static Matrix Rendement2(Matrix mat,String rendementType, int duration){
+	//RendementType : type of yield (relative, log,...)
+	//Duration : yield duration in days (daily,weekly, ...)
+	public Matrix Rendement(Matrix mat,String rendementType, int duration){
 
 		Matrix rendement=null;
 		
@@ -106,7 +108,6 @@ public class Performance {
 		int nbRows=mat.getRowDimension();
 		double[][] value;
 		value=new double[(nbRows-1)/duration][nbCols];
-		
 		
 		if(duration>nbRows){
 //			System.out.println("Dur�e sup�rieur � la plage de donn�e");
@@ -166,39 +167,31 @@ public class Performance {
 		/* table = country , maturity , date 
 		 * 
 		 */
-		public static int matrixSearch(String table, int indexStart, String wordSearch )  {
-
-
+		public int matrixSearch(String table, int indexStart, String wordSearch )  {
 
 			if (table.equals("countryTable")){
 				//	System.out.println("Je rentre dans country");
 				for (int i = indexStart ; i< className.length ; i++){
 					if (className[i].startsWith(wordSearch)){
 						return i;
-
 					}
 				}
-
-
 			}
+			
 			else if (table.equals("maturityTable")){
 				for (int i= indexStart ; i< time.length ; i++){
 					if (time[i].equals(wordSearch)){
 						return i;
-
 					}
 				}
-
 			}	
 
 			else if (table.equals("dateTable")){
 				for (int i= indexStart ; i< date.length ; i++){
 					if (date[i]==Double.parseDouble(wordSearch)){
 						return i;
-
 					}
 				}
-
 			}
 
 			//else
@@ -212,11 +205,7 @@ public class Performance {
 		 * tableDuration = ["1/12", " 12/12" etc ... ]
 		 * 
 		 */
-		public static Matrix extractSubMatrix(int nbYear, String[] tableCountry, String[] tableDuration){
-
-
-
-			Matrix subMatrix = null ;
+		public Matrix extractSubMatrix(int nbYear, String[] tableCountry, String[] tableDuration){
 
 			int[] indiceCol = new int[tableCountry.length * tableDuration.length];
 			//	    ArrayList indiceCol = new ArrayList();
@@ -239,19 +228,14 @@ public class Performance {
 					compteur++;
 					//subMatrix.set(i,j, matrixValue.get(i, j));				
 				}
-
-
 			}
-			for(int k = 0; k < indiceCol.length; k++)
-			{
+			
+			for(int k = 0; k < indiceCol.length; k++) {
 //				System.out.println("donn�e � l'indice " + k + " = " + indiceCol[k]);
 
 			} 
 
-
-
-
-			int jourOuvre = nbYear * 260;
+			int jourOuvre = nbYear * 261;
 			int nbRow = matrixValue.getRowDimension();
 			//System.out.println("jourOuvre "  + jourOuvre);
 			//System.out.println("nbRow " + nbRow);

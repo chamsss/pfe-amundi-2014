@@ -6,14 +6,19 @@ import Jama.EigenvalueDecomposition;
 
 public class VarianceCovariance {
 	
-	private static Matrix VCV;
-	private static Matrix correlation;
-	private static double[] eigenValues;
-	private static Matrix eigenVectors;
-	private static boolean definiePositive;
+	private Matrix mat; //matrice des rendements
+	private Matrix VCV;
+	private Matrix correlation;
+	private double[] eigenValues;
+	private Matrix eigenVectors;
+	private boolean definiePositive;
 	
-	//Calcul matrice VCV
- 		public static Matrix calculVCV (Matrix mat) {
+		public VarianceCovariance(Matrix mat){
+			this.mat=mat;
+		}
+	
+		//Calcul matrice VCV
+ 		public Matrix calculVCV () {
 			
 		 	int nbRows = mat.getRowDimension();
 		 	int nbColumns = mat.getColumnDimension();
@@ -47,7 +52,7 @@ public class VarianceCovariance {
 		}
 		
 		//Calcul valeurs propres
-		public static double[] eigenValues(){
+		public double[] eigenValues(){
 			
 			//On vérifie que la matrice soit bien carrée
 			if (VCV.getRowDimension() == VCV.getColumnDimension()){
@@ -61,7 +66,7 @@ public class VarianceCovariance {
 		}
 		
 		//Calcul vecteurs propres
-		public static Matrix eigenVectors(){
+		public Matrix eigenVectors(){
 			
 			//On vérifie que la matrice soit bien carrée
 			if (VCV.getRowDimension() == VCV.getColumnDimension()){
@@ -76,7 +81,7 @@ public class VarianceCovariance {
 		
 		
 		//Vérifie si VCV déf positive
-		public static boolean defPositive(){
+		public boolean defPositive(){
 			
 			double[] values = eigenValues();
 			
@@ -101,11 +106,11 @@ public class VarianceCovariance {
 		}
 		
 		//Calcul matrice de corrélation
-		public static Matrix correlationMatrix() {
-			correlation = VCV;
+		public Matrix correlationMatrix() {
+			correlation = new Matrix(VCV.getRowDimension(),VCV.getColumnDimension());
 			for (int i = 0 ; i < correlation.getRowDimension() ; i++){
 				for (int j = 0 ; j< correlation.getColumnDimension() ; j++) {
-					correlation.set(i, j, correlation.get(i, j)/Math.sqrt((correlation.get(i, i)*correlation.get(j, j))));
+					correlation.set(i, j, VCV.get(i, j)/Math.sqrt((VCV.get(i, i)*VCV.get(j, j))));
 				}
 			}
 			return correlation;

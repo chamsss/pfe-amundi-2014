@@ -7,16 +7,16 @@ public class Execution {
 		
 		// Ne pas mettre les extensions de fichiers
 
-		//String fileAdress = "C:\\Users\\Gaï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
-		//String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/ProjetsEclypse/pfe-eclipse/HistoriqueZeroCoupons2";
+		//String fileAdress = "C:\\Users\\Gaï¿½ï¿½ï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+		String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA";
 		//String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
-		String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics3";
+		//String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics3";
 		
 		//Traitement fichier
 		//TraitementFichier tf1 = new TraitementFichier(fileAdress);
 		//tf1.traitementCsv();
 		
-		
+/**		
 		//Performance
 		Performance p1 = new Performance(fileAdress);
 		p1.FillMatrixValue();
@@ -48,16 +48,16 @@ public class Execution {
 		VarianceCovariance v1 = new VarianceCovariance(b);
 		Matrix vcv = v1.calculVCV();
 		
-		/*Matrix vcv=new Matrix(3,3);
-		vcv.set(0, 0, 1);
-		vcv.set(0, 1, 0);
-		vcv.set(0, 2, 1);
-		vcv.set(1, 0, 0);
-		vcv.set(1, 1, 1);
-		vcv.set(1, 2, 1);
-		vcv.set(2, 0, 0);
-		vcv.set(2, 1, 0);
-		vcv.set(2, 2, 1);*/
+		//Matrix vcv=new Matrix(3,3);
+		//vcv.set(0, 0, 1);
+		//vcv.set(0, 1, 0);
+		//vcv.set(0, 2, 1);
+		//vcv.set(1, 0, 0);
+		//vcv.set(1, 1, 1);
+		//vcv.set(1, 2, 1);
+		//vcv.set(2, 0, 0);
+		//vcv.set(2, 1, 0);
+		//vcv.set(2, 2, 1);
 		
 		//Affichage matrice
 	 	System.out.println("VCV : ");
@@ -75,7 +75,7 @@ public class Execution {
 //		//Print valeurs propres
 //		System.out.println("Valeurs propres : ");
 //		if (values==null) {
-//			System.out.println("matrice VCV pas carrée");
+//			System.out.println("matrice VCV pas carrï¿½e");
 //		}
 //		
 //		else {
@@ -89,7 +89,7 @@ public class Execution {
 		//Print valeurs propres
 //		System.out.println("Vecteurs propres : ");
 //		if (vectors==null) {
-//			System.out.println("matrice VCV pas carrée");
+//			System.out.println("matrice VCV pas carrï¿½e");
 //		}
 //
 //		else {
@@ -102,20 +102,28 @@ public class Execution {
 //
 //		}
 		
-		//Définie positive
-		//System.out.println(" VCV déf positive : " + VarianceCovariance.defPositive());
+		//Dï¿½finie positive
+		//System.out.println(" VCV dï¿½f positive : " + VarianceCovariance.defPositive());
 		
-		//Matrice de corrélation
+		//Matrice de corrï¿½lation
 		Matrix cor = v1.correlationMatrix();
 		
 		//Print matrix correlation values
-		System.out.println("Matrice de corrélation : ");
+		System.out.println("Matrice de corrï¿½lation : ");
 				for(int j=0;j<cor.getRowDimension();j++){
 					for(int k=0;k<cor.getColumnDimension();k++){
 						System.out.print(cor.get(j, k)+" ");
 					}
 					System.out.println("\n");
 				}
-	}
+	**/			
+		
+		TraitementExcel te=new TraitementExcel(fileAdress);
+		Bond[] testBond=te.traitementCsv();
+		for(int i=0;i<testBond.length-1;i++){
+			System.out.println(testBond[i].getDescription()+ " "+testBond[i].getPrice());
+		}
 
+	}
+	
 }

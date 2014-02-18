@@ -1,5 +1,5 @@
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 
 public class Bond{
@@ -8,24 +8,23 @@ public class Bond{
 	
 	private String description;
 	private String currency;
-	String country;
 	double amount_outstanding;
 	double price;
 	double coupon;
 	int frequency;
-	GregorianCalendar date;
+	Date date;
 	double yield;
 	double  oas;
 	String class4_Code;
 	
 	
-	public Bond(String description, String currency, String country, double amount_outstanding, double price, double coupon, int frequency, GregorianCalendar date, double yield, double  oas, String class4_Code){
+	public Bond(String description, String currency, double amount_outstanding, double price, double coupon, int frequency, Date date, double yield, double  oas, String class4_Code){
 		this.description = description;
 		this.currency = currency;
-		this.country = country;
 		this.amount_outstanding = amount_outstanding;
 		this.price = price;
 		this.coupon = coupon;
+		this.frequency=frequency;
 		this.date = date;
 		this.yield = yield;
 		this.oas = oas;
@@ -69,9 +68,6 @@ public class Bond{
 
 
 
-	public String getCountry() {
-		return country;
-	}
 
 
 
@@ -97,7 +93,7 @@ public class Bond{
 
 
 
-	public GregorianCalendar getDate() {
+	public Date getDate() {
 		return date;
 	}
 

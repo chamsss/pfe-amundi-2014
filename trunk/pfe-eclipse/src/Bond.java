@@ -38,16 +38,16 @@ public class Bond{
 	
 	
 	
-	public double pricing_bond(Bond bond){
+	public double pricing_bond(){
 		
 		double price = 0;
 		
 		int nbCoupon;
 		
-		nbCoupon = nb_Coupon(bond.getDate(), bond.getFrequency());
+		nbCoupon = nb_Coupon(this.getDate(), this.getFrequency());
 		
 		
-		for (int i = 0; i < nbCoupon + 1 ; i++){
+		for (int i = 1; i < nbCoupon + 1 ; i++){
 			System.out.println("Boucle pricing_bond, i : " + i);
 			price = 0;
 					
@@ -75,8 +75,21 @@ public class Bond{
 		int nbcoupon = 0;
 		
 		
-		Date dateInit;
-		try {
+		DateTime dateInit=  new DateTime(2014, 2, 15, 0, 0 );
+
+			
+		Months mt = Months.monthsBetween(dateInit, maturity);
+		
+		nbcoupon = (mt.getMonths() / (12/frequency));
+		
+		
+		System.out.println("ecart de mois : " + mt.getMonths() + ", freq : " + frequency + " coupons : " + nbcoupon );
+		
+		
+		
+		/*try {
+			
+			
 			
 			
 			
@@ -102,7 +115,7 @@ public class Bond{
 			// TODO Auto-generated catch block
 			System.err.println(e.getMessage());;
 		}
-			
+			*/
 	
 		
 		return nbcoupon;
@@ -186,9 +199,9 @@ public class Bond{
 
 
 	public static void main(String args[]){
-		DateTime date = new DateTime();
-		Bond b  = new Bond("description", "currency", 1, 2, 3, 4, date, 5, 6, "class4_Code");
-		
+		DateTime date = new DateTime(2016, 7, 15, 0, 0 );
+		Bond b  = new Bond("description", "currency", 1, 2, 3, 2, date, 5, 6, "class4_Code");
+		b.pricing_bond();
 	}
 
 }

@@ -10,6 +10,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.joda.time.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 
 public class TraitementExcel {
 
@@ -41,20 +45,16 @@ public class TraitementExcel {
 		this.fileAdress = fileAdress;
 	}
 
-	private Date parseDate(String date, String format) throws ParseException
-	{
-		SimpleDateFormat formatter = new SimpleDateFormat(format);
-		return formatter.parse(date);
-	}
 
 	public Bond[] traitementCsv(){ 
 
 		try {
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yy");
 			BufferedReader br = new BufferedReader( new FileReader(fileAdress+".csv"));
+			
 			String line;
 			String[] lArray;
 			int nbLigne=countLine(fileAdress+".csv");
-			System.out.println(nbLigne);
 			Bond[] test = new Bond[nbLigne];
 			int k=0;
 			while((line = br.readLine()) != null){
@@ -68,7 +68,7 @@ public class TraitementExcel {
 					double price=Double.parseDouble(lArray[5]);
 					double coupon=Double.parseDouble(lArray[6]);
 					int freq=Integer.parseInt(lArray[7]);
-					Date date=parseDate(lArray[8], "dd/MM/yyyy");
+					DateTime dt = formatter.parseDateTime(lArray[8]);
 					double yield=Double.parseDouble(lArray[9]);
 					double oas=Double.parseDouble(lArray[11]);
 					String codeClass=lArray[16];

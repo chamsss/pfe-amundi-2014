@@ -2,12 +2,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.apache.commons.math3.analysis.function.Abs;
 import org.joda.time.*;
+import org.joda.time.format.*;
 
 public class Bond{
 
-	
-	
+
+
 	private String description;
 	private String currency;
 	double amount_outstanding;
@@ -18,8 +20,8 @@ public class Bond{
 	double yield;
 	double  oas;
 	String class4_Code;
-	
-	
+
+
 	public Bond(String description, String currency, double amount_outstanding, double price, double coupon, int frequency, DateTime date, double yield, double  oas, String class4_Code){
 		this.description = description;
 		this.currency = currency;
@@ -31,13 +33,11 @@ public class Bond{
 		this.yield = yield;
 		this.oas = oas;
 		this.class4_Code = class4_Code;
-		
 
-		
+
+
 	}
-	
-	
-	
+
 	public double pricing_bond(){
 		
 		double price = 0;
@@ -45,83 +45,90 @@ public class Bond{
 		int nbCoupon;
 		
 		nbCoupon = nb_Coupon(this.getDate(), this.getFrequency());
-		
-		
+		double newYield=Math.pow((1+this.getYield()),(1/this.getFrequency()))-1;
+
 		for (int i = 1; i < nbCoupon + 1 ; i++){
 			System.out.println("Boucle pricing_bond, i : " + i);
-			price = 0;
-					
+			price += this.getCoupon()/Math.pow((1+(newYield/100)),i);
+
 			if(i==nbCoupon){
-				
-				
-				
+				price+=100/Math.pow((1+(newYield/100)), nbCoupon);
 			}
 		}
 		
-
 		return price;
 	}
 	
-	
-	
+
+
+	public double findMyYield_dichotomy(){
+
+		//this.getPrice();
+
+		double yield = this.getYield();
+
+		double ecartMax = 0.01;
+
+		double borneInf = 0;
+		double borneSup = 100;
+
+		double ecart = 1;
+
+		while (ecart > ecartMax){
+			double borneMiddle = (borneInf + borneSup)/2;
+
+
+
+
+			ecart = this.getPrice() - this.pricing_bond();
+
+			if (ecart<0){ // on a le yield trop petit : prix du excel > prix calculé avec le nveau yield
+				ecart=-ecart;
+
+				borneInf = borneMiddle;
+
+
+			}
+
+			else{
+
+				borneSup = borneMiddle;
+			}
+
+		}
+
+		return yield;
+	}
+
+
 
 
 	public int nb_Coupon(DateTime maturity, int frequency){
-		
-		
+
+
 		System.out.println("Entrée dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
 
-		
+
 		int nbcoupon = 0;
-		
-		
+
+
 		DateTime dateInit=  new DateTime(2014, 2, 15, 0, 0 );
 
-			
+
 		Months mt = Months.monthsBetween(dateInit, maturity);
-		
+
 		nbcoupon = (mt.getMonths() / (12/frequency));
-		
-		
+
+
 		System.out.println("ecart de mois : " + mt.getMonths() + ", freq : " + frequency + " coupons : " + nbcoupon );
-		
-		
-		
-		/*try {
-			
-			
-			
-			
-			
-		//	dateInit = parseDate("15/02/2014", "dd/MM/yyyy");
-			
-			
-		//	while(dateInit.before(maturity)){
-				
-				//System.out.println("Boucle while de nb_coupon, nbcoupon : " + nbcoupon);
-				
-			//	System.out.println(dateInit.getMonth());
-				//dateInit = parseDate("15/" + Integer.toString(dateInit.getMonth()+1+(12/frequency)) + "/" + Integer.toString(dateInit.getYear()), "dd/MM/yyyy");
-				
-				//System.out.println(dateInit.toString());
-				
-		//		dateInit.getMonth();
-				nbcoupon +=1;
-				
-			//}
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());;
-		}
-			*/
-	
-		
+
+
+
+
 		return nbcoupon;
 	}
-	
-	
+
+
 	public double getAmount_outstanding() {
 		return amount_outstanding;
 	}
@@ -193,15 +200,33 @@ public class Bond{
 
 
 
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+
+
 	public double getOas() {
 		return oas;
 	}
 
 
 	public static void main(String args[]){
-		DateTime date = new DateTime(2016, 7, 15, 0, 0 );
-		Bond b  = new Bond("description", "currency", 1, 2, 3, 2, date, 5, 6, "class4_Code");
-		b.pricing_bond();
+
+	//( description,  currency,  amount_outstanding,  price,  coupon,  frequency,  date,  yield,   oas,  class4_Code){
+		TraitementExcel te=new TraitementExcel("/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA");
+		Bond[] testBond=te.traitementCsv();
+		Bond b1  = testBond[3];
+		String testDate = "15/01/16";
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yy");
+		DateTime dt = formatter.parseDateTime(testDate);
+		Bond b=new Bond("des","cur",400000.0,107.977425,5.3, 2, dt, 1.162161946,83.1207962,"BBC");
+		double priceBond=b.pricing_bond();
+		System.out.println(priceBond);
+		System.out.println(b.pricing_bond());
+		System.out.println(b.findMyYield_dichotomy());
 	}
+	
+
 
 }

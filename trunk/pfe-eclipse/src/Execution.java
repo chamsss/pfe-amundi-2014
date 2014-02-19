@@ -1,3 +1,5 @@
+import com.sun.corba.se.impl.orb.ParserTable.TestAcceptor1;
+
 import Jama.Matrix;
 
 
@@ -7,10 +9,10 @@ public class Execution {
 		
 		// Ne pas mettre les extensions de fichiers
 
-		//String fileAdress = "C:\\Users\\Gaùtch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+		//String fileAdress = "C:\\Users\\Gaï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
 		
-		String fileAdress = "C:\\Users\\Gaùtch\\Dropbox\\PFE (2)\\GlobalAGG";
-		//String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA";
+		//String fileAdress = "C:\\Users\\Gaï¿½tch\\Dropbox\\PFE (2)\\GlobalAGG";
+		String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA";
 		//String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
 		//String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics3";
 		
@@ -122,15 +124,19 @@ public class Execution {
 		
 		TraitementExcel te=new TraitementExcel(fileAdress);
 		Bond[] testBond=te.traitementCsv();
-		int i ;
-		for( i=0;i<testBond.length-1;i++){
-		//	System.out.println(testBond[i].getDescription()+ " "+testBond[i].getPrice());
+		for(int i=0;i<testBond.length-1;i++){
+			System.out.println("description : "+ testBond[i].getDescription()
+//					+ "\n currency : "+testBond[i].getCurrency()
+//					+ "\n amount outstanding : "+testBond[i].getAmount_outstanding()
+//					+ "\n price : "+testBond[i].getPrice()
+//					+ "\n coupon : "+testBond[i].getCoupon()
+//					+ "\n freq : "+testBond[i].getFrequency()
+//					+ "\n Maturity : "+testBond[i].getDate()
+//					+ "\n Yield : "+testBond[i].getYield()
+//					+ "\n OAS : "+testBond[i].getOas()
+//					+ "\n Class : "+ testBond[i].getClass4_Code());
+					);
 		}
-		
-		Bond bond1 = testBond[0];
-		System.out.println(bond1.getClass4_Code());
-		System.out.println(bond1.pricing_bond(bond1));
-
 	}
 	
 }

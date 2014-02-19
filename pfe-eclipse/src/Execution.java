@@ -7,8 +7,10 @@ public class Execution {
 		
 		// Ne pas mettre les extensions de fichiers
 
-		//String fileAdress = "C:\\Users\\Gaï¿½ï¿½ï¿½tch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
-		String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA";
+		//String fileAdress = "C:\\Users\\Gaùtch\\Desktop\\PFE\\Workspace\\pfe-eclipse\\HistoriqueZeroCoupons2";
+		
+		String fileAdress = "C:\\Users\\Gaùtch\\Dropbox\\PFE (2)\\GlobalAGG";
+		//String fileAdress = "/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA";
 		//String fileAdress = "C:/Users/Alexandra/workspace/pfe-eclipse/HistoriqueZeroCoupons2";
 		//String fileAdress = "C:/Users/Alexandra/Mes Documents/MAM5/PFE/ExplicationVCVRiskMetrics3";
 		
@@ -120,9 +122,14 @@ public class Execution {
 		
 		TraitementExcel te=new TraitementExcel(fileAdress);
 		Bond[] testBond=te.traitementCsv();
-		for(int i=0;i<testBond.length-1;i++){
-			System.out.println(testBond[i].getDescription()+ " "+testBond[i].getPrice());
+		int i ;
+		for( i=0;i<testBond.length-1;i++){
+		//	System.out.println(testBond[i].getDescription()+ " "+testBond[i].getPrice());
 		}
+		
+		Bond bond1 = testBond[0];
+		System.out.println(bond1.getClass4_Code());
+		System.out.println(bond1.pricing_bond(bond1));
 
 	}
 	

@@ -1,4 +1,5 @@
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -34,6 +35,79 @@ public class Bond{
 	}
 	
 	
+	
+	public double pricing_bond(Bond bond){
+		
+		double price = 0;
+		
+		int nbCoupon;
+		nbCoupon = nb_Coupon(bond.getDate(), bond.getFrequency());
+		
+		
+		for (int i = 0; i < nbCoupon + 1 ; i++){
+			System.out.println("Boucle pricing_bond, i : " + i);
+			price = 0;
+					
+			if(i==nbCoupon){
+				
+				
+				
+			}
+		}
+		
+
+		return price;
+	}
+	
+	
+	
+	private Date parseDate(String date, String format) throws ParseException
+	{
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
+		return formatter.parse(date);
+	}
+
+	
+	
+	public int nb_Coupon(Date maturity, int frequency){
+		
+		
+		System.out.println("Entrée dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
+		//maturiy.add
+		//int diffYear = maturity
+		
+		int nbcoupon = 0;
+		
+		
+		Date dateInit;
+		try {
+			dateInit = parseDate("15/02/2014", "dd/MM/yyyy");
+			
+			
+			while(dateInit.before(maturity)){
+				
+				//System.out.println("Boucle while de nb_coupon, nbcoupon : " + nbcoupon);
+				
+				System.out.println(dateInit.getMonth());
+				dateInit = parseDate("15/" + Integer.toString(dateInit.getMonth()+1+(12/frequency)) + "/" + Integer.toString(dateInit.getYear()), "dd/MM/yyyy");
+				
+				System.out.println(dateInit.toString());
+				
+		//		dateInit.getMonth();
+				nbcoupon +=1;
+				
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());;
+		}
+			
+	
+		
+		return nbcoupon;
+	}
 	
 	
 	public double getAmount_outstanding() {
@@ -112,5 +186,6 @@ public class Bond{
 	}
 
 
+	
 
 }

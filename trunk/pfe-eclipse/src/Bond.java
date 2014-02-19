@@ -2,6 +2,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.joda.time.*;
 
 public class Bond{
 
@@ -13,13 +14,13 @@ public class Bond{
 	double price;
 	double coupon;
 	int frequency;
-	Date date;
+	DateTime date;
 	double yield;
 	double  oas;
 	String class4_Code;
 	
 	
-	public Bond(String description, String currency, double amount_outstanding, double price, double coupon, int frequency, Date date, double yield, double  oas, String class4_Code){
+	public Bond(String description, String currency, double amount_outstanding, double price, double coupon, int frequency, DateTime date, double yield, double  oas, String class4_Code){
 		this.description = description;
 		this.currency = currency;
 		this.amount_outstanding = amount_outstanding;
@@ -31,6 +32,7 @@ public class Bond{
 		this.oas = oas;
 		this.class4_Code = class4_Code;
 		
+
 		
 	}
 	
@@ -41,6 +43,7 @@ public class Bond{
 		double price = 0;
 		
 		int nbCoupon;
+		
 		nbCoupon = nb_Coupon(bond.getDate(), bond.getFrequency());
 		
 		
@@ -61,42 +64,38 @@ public class Bond{
 	
 	
 	
-	private Date parseDate(String date, String format) throws ParseException
-	{
-		SimpleDateFormat formatter = new SimpleDateFormat(format);
-		return formatter.parse(date);
-	}
 
-	
-	
-	public int nb_Coupon(Date maturity, int frequency){
+
+	public int nb_Coupon(DateTime maturity, int frequency){
 		
 		
 		System.out.println("Entrée dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
-		//maturiy.add
-		//int diffYear = maturity
+
 		
 		int nbcoupon = 0;
 		
 		
 		Date dateInit;
 		try {
-			dateInit = parseDate("15/02/2014", "dd/MM/yyyy");
 			
 			
-			while(dateInit.before(maturity)){
+			
+		//	dateInit = parseDate("15/02/2014", "dd/MM/yyyy");
+			
+			
+		//	while(dateInit.before(maturity)){
 				
 				//System.out.println("Boucle while de nb_coupon, nbcoupon : " + nbcoupon);
 				
-				System.out.println(dateInit.getMonth());
-				dateInit = parseDate("15/" + Integer.toString(dateInit.getMonth()+1+(12/frequency)) + "/" + Integer.toString(dateInit.getYear()), "dd/MM/yyyy");
+			//	System.out.println(dateInit.getMonth());
+				//dateInit = parseDate("15/" + Integer.toString(dateInit.getMonth()+1+(12/frequency)) + "/" + Integer.toString(dateInit.getYear()), "dd/MM/yyyy");
 				
-				System.out.println(dateInit.toString());
+				//System.out.println(dateInit.toString());
 				
 		//		dateInit.getMonth();
 				nbcoupon +=1;
 				
-			}
+			//}
 			
 			
 		} catch (Exception e) {
@@ -167,7 +166,7 @@ public class Bond{
 
 
 
-	public Date getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
@@ -186,6 +185,10 @@ public class Bond{
 	}
 
 
-	
+	public static void main(String args[]){
+		DateTime date = new DateTime();
+		Bond b  = new Bond("description", "currency", 1, 2, 3, 4, date, 5, 6, "class4_Code");
+		
+	}
 
 }

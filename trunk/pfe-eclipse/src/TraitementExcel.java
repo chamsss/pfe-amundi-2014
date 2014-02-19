@@ -73,7 +73,7 @@ public class TraitementExcel {
 					double oas=Double.parseDouble(lArray[11]);
 					String codeClass=lArray[16];
 
-					test[k-1]= new Bond(description,currency,amount_outstanding,price,coupon,freq,date,yield,oas,codeClass);
+				//	test[k-1]= new Bond(description,currency,amount_outstanding,price,coupon,freq,date,yield,oas,codeClass);
 
 				}		
 

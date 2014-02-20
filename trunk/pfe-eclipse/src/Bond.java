@@ -42,9 +42,10 @@ public class Bond{
 		
 		double price = 0;
 		
-		int nbCoupon;
+		int nbCoupon=0;
 		
 		nbCoupon = nb_Coupon(this.getDate(), this.getFrequency());
+		//Calcul du taux actualisÃ©
 		double newYield=Math.pow((1+this.getYield()),(1/this.getFrequency()))-1;
 
 		for (int i = 1; i < nbCoupon + 1 ; i++){
@@ -86,7 +87,7 @@ public class Bond{
 			double borneMiddle = (borneInf + borneSup)/2;
 			System.out.println("borne mid" + borneMiddle);
 			System.out.println("ecart " + ecart);
-			if (ecart<0){ // on a le yield trop petit : prix du excel > prix calculé avec le nveau yield
+			if (ecart<0){ // on a le yield trop petit : prix du excel > prix calculï¿½ avec le nveau yield
 				ecart=-ecart;
 				borneInf = borneMiddle;
 
@@ -110,7 +111,7 @@ public class Bond{
 	public int nb_Coupon(DateTime maturity, int frequency){
 
 
-		//System.out.println("Entrée dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
+		//System.out.println("Entrï¿½e dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
 
 
 		int nbcoupon = 0;

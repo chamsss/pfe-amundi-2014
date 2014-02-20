@@ -48,7 +48,7 @@ public class Bond{
 		double newYield=Math.pow((1+this.getYield()),(1/this.getFrequency()))-1;
 
 		for (int i = 1; i < nbCoupon + 1 ; i++){
-			System.out.println("Boucle pricing_bond, i : " + i);
+			//System.out.println("Boucle pricing_bond, i : " + i);
 			price += this.getCoupon()/Math.pow((1+(newYield/100)),i);
 
 			if(i==nbCoupon){
@@ -65,35 +65,39 @@ public class Bond{
 
 		//this.getPrice();
 
-		double yield = this.getYield();
+		double originalPrice = this.getPrice();
+				
+				
+		double newYield = this.getYield();
 
-		double ecartMax = 0.01;
+		double ecartMax = 0.1;
 
 		double borneInf = 0;
 		double borneSup = 100;
 
 		double ecart = 1;
 
+		int cpt = 0;
+		
 		while (ecart > ecartMax){
+			System.out.println("Je suis dans la boucle pour la " + cpt+" eme fois");
+			cpt+=1;
+			
 			double borneMiddle = (borneInf + borneSup)/2;
-
-
-
-
-			ecart = this.getPrice() - this.pricing_bond();
-
+			System.out.println("borne mid" + borneMiddle);
+			System.out.println("ecart " + ecart);
 			if (ecart<0){ // on a le yield trop petit : prix du excel > prix calculé avec le nveau yield
 				ecart=-ecart;
-
 				borneInf = borneMiddle;
 
-
 			}
-
 			else{
-
 				borneSup = borneMiddle;
 			}
+	
+			ecart = originalPrice - this.getPrice();
+			newYield = borneMiddle;
+			this.setYield(newYield);
 
 		}
 
@@ -106,7 +110,7 @@ public class Bond{
 	public int nb_Coupon(DateTime maturity, int frequency){
 
 
-		System.out.println("Entrée dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
+		//System.out.println("Entrée dans la fct nb_coupon, maturity : " + maturity + " freq : " + frequency);
 
 
 		int nbcoupon = 0;
@@ -120,7 +124,7 @@ public class Bond{
 		nbcoupon = (mt.getMonths() / (12/frequency));
 
 
-		System.out.println("ecart de mois : " + mt.getMonths() + ", freq : " + frequency + " coupons : " + nbcoupon );
+	//	System.out.println("ecart de mois : " + mt.getMonths() + ", freq : " + frequency + " coupons : " + nbcoupon );
 
 
 
@@ -200,8 +204,8 @@ public class Bond{
 
 
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setYield(double yield) {
+		this.yield = yield;
 	}
 
 
@@ -214,16 +218,20 @@ public class Bond{
 	public static void main(String args[]){
 
 	//( description,  currency,  amount_outstanding,  price,  coupon,  frequency,  date,  yield,   oas,  class4_Code){
-		TraitementExcel te=new TraitementExcel("/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA");
-		Bond[] testBond=te.traitementCsv();
-		Bond b1  = testBond[3];
+//		TraitementExcel te=new TraitementExcel("/Users/david/Desktop/Polytech/MAM5/PFE/TraitementFichier/USA");
+//		Bond[] testBond=te.traitementCsv();
+//		Bond b1  = testBond[3];
+		
 		String testDate = "15/01/16";
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yy");
 		DateTime dt = formatter.parseDateTime(testDate);
+		
+		
 		Bond b=new Bond("des","cur",400000.0,107.977425,5.3, 2, dt, 1.162161946,83.1207962,"BBC");
-		double priceBond=b.pricing_bond();
-		System.out.println(priceBond);
-		System.out.println(b.pricing_bond());
+		System.out.println(b.getYield());
+		//double priceBond=b.pricing_bond();
+		//System.out.println(priceBond);
+		//System.out.println(b.pricing_bond());
 		System.out.println(b.findMyYield_dichotomy());
 	}
 	

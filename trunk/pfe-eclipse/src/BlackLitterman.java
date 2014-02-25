@@ -12,6 +12,14 @@ public class BlackLitterman {
 	private Matrix V; //vecteur des vues
 	private Matrix BL; //vecteur des rendements espérés
 	
+	
+	public BlackLitterman(double tau, double aversion, Matrix vcv, Matrix poids) {
+		this.tau = tau;
+		this.aversion = aversion;
+		this.vcv = vcv;
+		this.poids = poids;
+	}
+	
 	public BlackLitterman(double tau, double aversion, Matrix vcv, Matrix poids, Matrix P, Matrix omega, Matrix V) {
 		this.tau = tau;
 		this.aversion = aversion;

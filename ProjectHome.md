@@ -1,0 +1,1 @@
+Utilisation de la structure de marché obtenue pour l’évaluation du risk ex-ante d’un portefeuille. Calcul de l’exposition du portefeuille sur la structure de marché obtenue pour différentes classes d’actifs,  calcul de risque paramétrique « instantané », volatilité ou tracking-error.
